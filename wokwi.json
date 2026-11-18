@@ -1,0 +1,881 @@
+{
+  "version": 1,
+  "author": "HUIT Lab",
+  "title": "ESP32 + 2\u00d774HC595 + 16 LED + MQTT",
+  "description": "\u0110i\u1ec1u khi\u1ec3n 16 k\u00eanh LED qua MQTT t\u1eeb 2 chip 74HC595 daisy-chain",
+  "id": "esp32-74hc595-mqtt-demo",
+  "firmware": "firmware.elf",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp32",
+      "top": -100,
+      "left": -150,
+      "attrs": {
+        "env": "Wokwi-GUEST"
+      }
+    },
+    {
+      "type": "wokwi-74hc595",
+      "id": "sr1",
+      "top": 100,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-74hc595",
+      "id": "sr2",
+      "top": 100,
+      "left": 300,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led0",
+      "top": 300,
+      "left": 0,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r0",
+      "top": 300,
+      "left": 25,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 300,
+      "left": 50,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 300,
+      "left": 75,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": 300,
+      "left": 100,
+      "attrs": {
+        "color": "blue"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 300,
+      "left": 125,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led3",
+      "top": 300,
+      "left": 150,
+      "attrs": {
+        "color": "yellow"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 300,
+      "left": 175,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led4",
+      "top": 300,
+      "left": 200,
+      "attrs": {
+        "color": "cyan"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r4",
+      "top": 300,
+      "left": 225,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led5",
+      "top": 300,
+      "left": 250,
+      "attrs": {
+        "color": "magenta"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r5",
+      "top": 300,
+      "left": 275,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led6",
+      "top": 300,
+      "left": 300,
+      "attrs": {
+        "color": "white"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r6",
+      "top": 300,
+      "left": 325,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led7",
+      "top": 300,
+      "left": 350,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r7",
+      "top": 300,
+      "left": 375,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led8",
+      "top": 400,
+      "left": 0,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r8",
+      "top": 400,
+      "left": 25,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led9",
+      "top": 400,
+      "left": 50,
+      "attrs": {
+        "color": "blue"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r9",
+      "top": 400,
+      "left": 75,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led10",
+      "top": 400,
+      "left": 100,
+      "attrs": {
+        "color": "yellow"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r10",
+      "top": 400,
+      "left": 125,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led11",
+      "top": 400,
+      "left": 150,
+      "attrs": {
+        "color": "cyan"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r11",
+      "top": 400,
+      "left": 175,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led12",
+      "top": 400,
+      "left": 200,
+      "attrs": {
+        "color": "magenta"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r12",
+      "top": 400,
+      "left": 225,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led13",
+      "top": 400,
+      "left": 250,
+      "attrs": {
+        "color": "white"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r13",
+      "top": 400,
+      "left": 275,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led14",
+      "top": 400,
+      "left": 300,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r14",
+      "top": 400,
+      "left": 325,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led15",
+      "top": 400,
+      "left": 350,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r15",
+      "top": 400,
+      "left": 375,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp32:14",
+      "sr1:14",
+      "blue",
+      [
+        "90",
+        "0"
+      ]
+    ],
+    [
+      "esp32:12",
+      "sr1:11",
+      "yellow",
+      [
+        "90",
+        "-50"
+      ]
+    ],
+    [
+      "esp32:13",
+      "sr1:12",
+      "orange",
+      [
+        "90",
+        "-100"
+      ]
+    ],
+    [
+      "esp32:3V3",
+      "sr1:16",
+      "red",
+      [
+        "150",
+        "-50"
+      ]
+    ],
+    [
+      "esp32:GND",
+      "sr1:8",
+      "black",
+      [
+        "150",
+        "50"
+      ]
+    ],
+    [
+      "esp32:GND",
+      "sr1:13",
+      "black",
+      [
+        "150",
+        "100"
+      ]
+    ],
+    [
+      "esp32:3V3",
+      "sr1:10",
+      "red",
+      [
+        "150",
+        "-150"
+      ]
+    ],
+    [
+      "sr1:9",
+      "sr2:14",
+      "green",
+      [
+        "150",
+        "0"
+      ]
+    ],
+    [
+      "esp32:12",
+      "sr2:11",
+      "yellow",
+      [
+        "250",
+        "-50"
+      ]
+    ],
+    [
+      "esp32:13",
+      "sr2:12",
+      "orange",
+      [
+        "250",
+        "-100"
+      ]
+    ],
+    [
+      "esp32:3V3",
+      "sr2:16",
+      "red",
+      [
+        "300",
+        "-50"
+      ]
+    ],
+    [
+      "esp32:GND",
+      "sr2:8",
+      "black",
+      [
+        "300",
+        "50"
+      ]
+    ],
+    [
+      "esp32:GND",
+      "sr2:13",
+      "black",
+      [
+        "300",
+        "100"
+      ]
+    ],
+    [
+      "esp32:3V3",
+      "sr2:10",
+      "red",
+      [
+        "300",
+        "-150"
+      ]
+    ],
+    [
+      "sr1:15",
+      "r0:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r0:2",
+      "led0:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led0:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:1",
+      "r1:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r1:2",
+      "led1:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led1:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:2",
+      "r2:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r2:2",
+      "led2:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led2:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:3",
+      "r3:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r3:2",
+      "led3:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led3:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:4",
+      "r4:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r4:2",
+      "led4:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led4:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:5",
+      "r5:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r5:2",
+      "led5:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led5:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:6",
+      "r6:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r6:2",
+      "led6:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led6:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr1:7",
+      "r7:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r7:2",
+      "led7:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led7:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:15",
+      "r8:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r8:2",
+      "led8:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led8:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:1",
+      "r9:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r9:2",
+      "led9:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led9:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:2",
+      "r10:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r10:2",
+      "led10:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led10:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:3",
+      "r11:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r11:2",
+      "led11:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led11:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:4",
+      "r12:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r12:2",
+      "led12:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led12:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:5",
+      "r13:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r13:2",
+      "led13:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led13:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:6",
+      "r14:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r14:2",
+      "led14:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led14:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ],
+    [
+      "sr2:7",
+      "r15:1",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "r15:2",
+      "led15:a",
+      "red",
+      [
+        "0",
+        "0"
+      ]
+    ],
+    [
+      "led15:c",
+      "esp32:GND",
+      "black",
+      [
+        "0",
+        "50"
+      ]
+    ]
+  ]
+}
