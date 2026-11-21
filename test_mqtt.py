@@ -13,18 +13,18 @@ PORT = 1883
 TOPIC = "warehouse/node-A/light"
 
 # Callback
-def on_connect(client, userdata, flags, rc):
-    if rc == 0:
+def on_connect(client, userdata, flags, reason_code, properties):
+    if reason_code == 0:
         print("✓ Connected to broker")
     else:
-        print(f"✗ Connection failed with code {rc}")
+        print(f"✗ Connection failed with code {reason_code}")
 
-def on_disconnect(client, userdata, rc):
-    if rc != 0:
+def on_disconnect(client, userdata, flags, reason_code, properties):
+    if reason_code != 0:
         print("✗ Unexpected disconnection")
 
 # Tạo client
-client = mqtt.Client()
+client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
 

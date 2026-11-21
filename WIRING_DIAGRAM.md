@@ -88,27 +88,27 @@ ESP32 GPIO13 ──→ SR1:12 (STCP) ──→ SR2:12 (STCP)
 **SR1 → LED 0-7:**
 
 ```
-SR1:15 (Q0)  → LED0 anode ─┐
-SR1:1  (Q1)  → LED1 anode ─┤
-SR1:2  (Q2)  → LED2 anode ─┤
-SR1:3  (Q3)  → LED3 anode ─┤
-SR1:4  (Q4)  → LED4 anode ─┤  All cathodes → ESP32 GND
-SR1:5  (Q5)  → LED5 anode ─┤
-SR1:6  (Q6)  → LED6 anode ─┤
-SR1:7  (Q7)  → LED7 anode ─┘
+SR1:15 (Q0) → 220Ω → LED0 anode ─┐
+SR1:1  (Q1) → 220Ω → LED1 anode ─┤
+SR1:2  (Q2) → 220Ω → LED2 anode ─┤
+SR1:3  (Q3) → 220Ω → LED3 anode ─┤
+SR1:4  (Q4) → 220Ω → LED4 anode ─┤  All cathodes → ESP32 GND
+SR1:5  (Q5) → 220Ω → LED5 anode ─┤
+SR1:6  (Q6) → 220Ω → LED6 anode ─┤
+SR1:7  (Q7) → 220Ω → LED7 anode ─┘
 ```
 
 **SR2 → LED 8-15:**
 
 ```
-SR2:15 (Q0)  → LED8 anode ─┐
-SR2:1  (Q1)  → LED9 anode ─┤
-SR2:2  (Q2)  → LED10 anode─┤
-SR2:3  (Q3)  → LED11 anode─┤
-SR2:4  (Q4)  → LED12 anode─┤  All cathodes → ESP32 GND
-SR2:5  (Q5)  → LED13 anode─┤
-SR2:6  (Q6)  → LED14 anode─┤
-SR2:7  (Q7)  → LED15 anode─┘
+SR2:15 (Q0) → 220Ω → LED8 anode  ─┐
+SR2:1  (Q1) → 220Ω → LED9 anode  ─┤
+SR2:2  (Q2) → 220Ω → LED10 anode ─┤
+SR2:3  (Q3) → 220Ω → LED11 anode ─┤
+SR2:4  (Q4) → 220Ω → LED12 anode ─┤  All cathodes → ESP32 GND
+SR2:5  (Q5) → 220Ω → LED13 anode ─┤
+SR2:6  (Q6) → 220Ω → LED14 anode ─┤
+SR2:7  (Q7) → 220Ω → LED15 anode ─┘
 ```
 
 ---
@@ -161,41 +161,33 @@ mosquitto_pub -h broker.emqx.io -t warehouse/node-A/light \
 
 **Key connections:**
 
-```json
+```jsonc
 // ESP32 → SR1 (control lines)
-["esp32:14", "sr1:14", "blue"],      // ✅ Data
-["esp32:12", "sr1:11", "yellow"],    // ✅ Clock
-["esp32:13", "sr1:12", "orange"],    // ✅ Latch
+["esp32:D14", "sr1:DS", "blue", []],
+["esp32:D12", "sr1:SHCP", "yellow", []],
+["esp32:D13", "sr1:STCP", "orange", []],
 
 // SR1 → SR2 (cascade)
-["sr1:9", "sr2:14", "green"],        // ✅ Q7' → DS
+["sr1:Q7S", "sr2:DS", "green", []],
 
 // ESP32 → SR1 (power)
-["esp32:3V3", "sr1:16", "red"],      // ✅ VCC
-["esp32:GND", "sr1:8", "black"],     // ✅ GND
-["esp32:GND", "sr1:13", "black"],    // ✅ OE enable
+["esp32:3V3", "sr1:VCC", "red", []],
+["esp32:3V3", "sr1:MR", "red", []],
+["esp32:GND.1", "sr1:GND", "black", []],
+["esp32:GND.1", "sr1:OE", "black", []],
 
 // ESP32 → SR2 (power + control, PARALLEL to SR1)
-["esp32:12", "sr2:11", "yellow"],    // ✅ Clock (PARALLEL!)
-["esp32:13", "sr2:12", "orange"],    // ✅ Latch (PARALLEL!)
-["esp32:3V3", "sr2:16", "red"],      // ✅ VCC
-["esp32:GND", "sr2:8", "black"],     // ✅ GND
-["esp32:GND", "sr2:13", "black"],    // ✅ OE enable
+["esp32:D12", "sr2:SHCP", "yellow", []],
+["esp32:D13", "sr2:STCP", "orange", []],
+["esp32:3V3", "sr2:VCC", "red", []],
+["esp32:3V3", "sr2:MR", "red", []],
+["esp32:GND.1", "sr2:GND", "black", []],
+["esp32:GND.1", "sr2:OE", "black", []],
 
-// SR1 → LED 0-7
-["sr1:15", "led0:a"],  // Q0 → LED0
-["sr1:1", "led1:a"],   // Q1 → LED1
-// ... etc
-
-// SR2 → LED 8-15
-["sr2:15", "led8:a"],  // Q0 → LED8
-["sr2:1", "led9:a"],   // Q1 → LED9
-// ... etc
-
-// All LED cathodes → GND
-["led0:c", "esp32:GND"],
-["led1:c", "esp32:GND"],
-// ... etc
+// Mỗi LED có một điện trở nối tiếp, ví dụ LED0
+["sr1:Q0", "r0:1", "red", []],
+["r0:2", "led0:A", "red", []],
+["led0:C", "esp32:GND.1", "black", []]
 ```
 
 ---
@@ -226,8 +218,7 @@ mosquitto_pub -h broker.emqx.io -t warehouse/node-A/light \
 - Pin 14: DS (serial data)
 - Pin 16: VCC
 
-**Wokwi 74HC595 pinout** (Wokwi uses standard DIP-16):
-- Same as datasheet above
+**Tên chân Wokwi:** dùng tên chức năng như `DS`, `SHCP`, `Q0`, không dùng số chân DIP. ESP32 DevKit V1 dùng `D14`, `D12`, `D13` và `GND.1`/`GND.2`.
 
 ---
 
